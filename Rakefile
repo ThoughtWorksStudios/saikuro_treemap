@@ -1,4 +1,5 @@
 require 'rake'
+require 'rake/testtask'
 
 $: << 'lib'
 require 'saikuro_treemap'
@@ -48,6 +49,12 @@ else
   end
 end
 
+task :test do
+  Rake::TestTask.new do |t|
+     t.libs << "test"
+     t.test_files = FileList['test/*test.rb']
+     t.verbose = true
+   end
+end
 
-
-task :default => 'metrics:ccn_treemap'
+task :default => :test
