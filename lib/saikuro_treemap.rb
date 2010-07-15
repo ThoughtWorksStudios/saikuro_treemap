@@ -1,5 +1,7 @@
 require 'rubygems'
 require 'json'
+require 'erb'
+require 'rake'
 
 require 'saikuro_treemap/parser'
 require 'saikuro_treemap/ccn_node'
@@ -16,9 +18,7 @@ module SaikuroTreemap
       "--cyclo --filter_cyclo 0"]
   }
   
-  def self.generate_treemap(config={})
-    require 'erb'
-    
+  def self.generate_treemap(config={})    
     temp_dir = 'tmp/saikuro'
     
     config = DEFAULT_CONFIG.merge(config)
@@ -36,12 +36,9 @@ module SaikuroTreemap
       end 
     end
     
-    saikuro = Parser.parse(temp_dir)
-    puts "[DEBUG] saikuro => #{saikuro.inspect}"
+    saikuro_files = Parser.parse(temp_dir)
     
-    @ccn_node = create_ccn_root_node(saikuro)
-    puts "[DEBUG] @ccn_node => #{@ccn_node.inspect}"
-    
+    @ccn_node = create_ccn_root_node(saikuro_files)    
     FileUtils.mkdir_p(File.dirname(config[:output_file]))
 
     File.open(config[:output_file], 'w') do |f|
@@ -49,21 +46,17 @@ module SaikuroTreemap
     end
   end
   
-  def self.create_ccn_root_node(saikuro)
+  def self.create_ccn_root_node(saikuro_files)
     root_node = CCNNode.new('', '', :data => {})
-    saikuro.each {|f|
-      puts "[DEBUG] f => #{f.inspect}"
-      
+    saikuro_files.each {|f|      
       f[:classes].each do |c|
         class_node_name = c[:class_name]
         namespaces = class_node_name.split("::")[0..-2]
-        namespaces.each_with_index do |name, i|
-          root_node.find_or_create_node(namespaces[0..i])
-        end    
+        root_node.create_nodes(*namespaces)
 
         class_node = CCNNode.new(class_node_name, class_node_name.split("::").last, :data => {:complexity => c[:complexity], :lines => c[:lines], :$area => c[:lines], :$color => '#101010'})
 
-        parent = (root_node.find_node(class_node_name.split("::")[0..-2]) || root_node)
+        parent = root_node.find_node(*namespaces)
         parent.add_child(class_node)
 
         c[:methods].each do |m|
