@@ -53,28 +53,19 @@ module SaikuroTreemap
         class_node_name = c[:class_name]
         namespaces = class_node_name.split("::")[0..-2]
         root_node.create_nodes(*namespaces)
-
-        class_node = CCNNode.new(class_node_name, :data => {:complexity => c[:complexity], :lines => c[:lines], :$area => c[:lines], :$color => '#101010'})
         parent = root_node.find_node(*namespaces)
+        class_node = CCNNode.new(class_node_name, c[:complexity], c[:lines])
         parent.add_child(class_node)
 
         c[:methods].each do |m|
-          method_node_name = m[:name]
-          method_node = CCNNode.new(method_node_name, :data => {:complexity => m[:complexity], :lines => m[:lines], :$area => m[:lines], :$color => ccn_color(m[:complexity])})
-          class_node.add_child(method_node)
+          class_node.add_child(CCNNode.new(m[:name], m[:complexity], m[:lines]))
         end
       end
     end
 
     root_node
   end
-  
-  def self.ccn_color(ccn)
-    return "#AE0000" if ccn > 10
-    return "#006500" if ccn <= 5
-    return "#4545C2"
-  end
-  
+    
   def self.template(file)
     File.expand_path("../../templates/#{file}", __FILE__)
   end
