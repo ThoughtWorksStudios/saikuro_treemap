@@ -13,13 +13,26 @@ blue is somewhere in between.
 Small evenly distributed blocks which are green in color is indicative of
 good code.
 
-h2. Installation
+h2. Usage
 
-TBD
+We clearly need to make the gem install a bit easier, but for now:
 
-h2. Configuration
+* checkout this repos from github
+* >rake gem to build the saikuro_treemap gem
+* install saikuro_treemap gem
+* add a rake task like below to your project, adjusting :code_dirs for your project:
 
-TBD
+<pre>
+    namespace :metrics do
+      desc 'generate ccn treemap'
+      task :ccn_treemap do
+        SaikuroTreemap.generate_treemap :code_dirs => ['lib']
+        `open reports/saikuro_treemap.html`
+      end
+    end
+</pre> 
+  
+* run the task to see the treemap in your browser
 
 h2. License
 

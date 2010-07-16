@@ -11,11 +11,12 @@ Gem::Specification.new do |s|
 }
   s.email = %q{studios@thoughtworks.com}
   s.extra_rdoc_files = ["README.textile"]
-  s.files = [".gitignore", "Rakefile", "lib/saikuro_treemap.rb", "lib/saikuro_treemap/ccn_node.rb", "lib/saikuro_treemap/parser.rb", "templates/css/treemap.css", "templates/index.html.erb", "templates/js/jit-min.js", "templates/js/jit.js", "templates/js/saikuro-render.js", "templates/saikuro.html.erb", "test/ccn_node_test.rb", "test/test_helper.rb", "saikuro_treemap.gemspec", "README.textile"]
+  s.files = [".gitignore", "MIT-LICENSE.txt", "README.textile", "Rakefile", "lib/saikuro_treemap.rb", "lib/saikuro_treemap/ccn_node.rb", "lib/saikuro_treemap/parser.rb", "saikuro_treemap.gemspec", "templates/css/treemap.css", "templates/index.html.erb", "templates/js/jit-min.js", "templates/js/jit.js", "templates/js/saikuro-render.js", "templates/saikuro.html.erb", "test/ccn_node_test.rb", "test/test_helper.rb"]
+  s.has_rdoc = false
   s.homepage = %q{http://saikuro_treemap.rubyforge.org}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{saikuro_treemap}
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Generate CCN Treemap based on saikuro analysis}
   s.test_files = ["test/test_helper.rb"]
 
@@ -23,7 +24,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
     else
     end
   else
