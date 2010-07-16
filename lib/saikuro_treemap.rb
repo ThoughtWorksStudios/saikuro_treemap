@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'json'
+require 'json/pure'
 require 'erb'
 require 'rake'
 
