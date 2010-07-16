@@ -13,30 +13,36 @@ blue is somewhere in between.
 Small evenly distributed blocks which are green in color is indicative of
 good code.
 
-h2. Usage
+h2. Demo
 
-We clearly need to make the gem install a bit easier, but for now:
+"Click here":http://thoughtworksstudios.github.com/rake.ccn.html for a demo
+of the CCN for the popular "rake":http://rake.rubyforge.org/ tool.
 
-* checkout this repos from github
-* build the saikuro_treemap gem...
-* >rake gem 
-* install saikuro_treemap gem...
-* >sudo gem install saikuro_treemap 
-* add a rake task like below to your project, adjusting :code_dirs for your project:
+h2. Installation
+
+<code>$ [sudo] gem install saikuro_treemap</code>
+
+h2. Configuration
+
+In your Rakefile, add the following:
 
 <pre>
-    require 'saikuro_treemap'
-  
-    namespace :metrics do
-      desc 'generate ccn treemap'
-      task :ccn_treemap do
-        SaikuroTreemap.generate_treemap :code_dirs => ['lib']
-        `open reports/saikuro_treemap.html`
-      end
-    end
+require 'saikuro_treemap'
+
+namespace :metrics do
+  desc 'generate ccn treemap'
+  task :ccn_treemap do
+    SaikuroTreemap.generate_treemap :code_dirs => ['lib']
+    `open reports/saikuro_treemap.html`
+  end
+end
 </pre> 
-  
-* run the task to see the treemap in your browser
+
+h2. Execute
+
+<code>$ rake metrics:ccn_treemap</code>
+
+This would generate the treemap report in "reports/saikuro_treemap.html".
 
 h2. License
 
