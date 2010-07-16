@@ -1,30 +1,3 @@
-h2. Saikuro Treemap Generator
-
-This gem generates a "treemap":http://en.wikipedia.org/wiki/Treemapping
-showing the complexity of ruby code on which it is run. It uses 
-"Saikuro":http://saikuro.rubyforge.org/ under the covers to analyze ruby
-code complexity.
-
-The size of blocks in the treemap is representative of the size of the
-code element represented by that block. The color of the block indicates
-complexity of that particular code element. Green is good, red is bad, 
-blue is somewhere in between.
-
-Small evenly distributed blocks which are green in color is indicative of
-good code.
-
-h2. Installation
-
-TBD
-
-h2. Configuration
-
-TBD
-
-h2. License
-
-Saikuro Treemap Generator is MIT Licensed
-
 The MIT License
 
 Copyright (c) 2010 ThoughtWorks, Inc. (http://thoughtworks.com)
