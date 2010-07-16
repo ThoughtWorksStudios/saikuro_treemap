@@ -42,7 +42,8 @@ module SaikuroTreemap
     end
     
     def area
-      @lines
+      return @lines if leaf?
+      @children.inject(0) {|sum, child| sum + child.area }
     end
     
     def color

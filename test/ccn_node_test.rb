@@ -80,5 +80,17 @@ class CCNNodeTest < Test::Unit::TestCase
     assert_equal "#101010", parent.color
   end
   
+  def test_area_is_same_with_lines_for_leaf_node
+    assert_equal 30, CCNNode.new('A', 10, 30).area
+  end
+  
+  def test_area_is_sum_of_child_node_area_for_non_leaf_node
+    parent = CCNNode.new('A', 10, 10)
+    parent.add_child CCNNode.new('A::B::C', 10, 20)
+    parent.add_child CCNNode.new('A::B::C', 10, 30)
+    
+    assert_equal 50, parent.area
+  end
+  
   
 end
