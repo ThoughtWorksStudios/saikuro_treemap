@@ -26,7 +26,7 @@ else
       
       s.description     = %Q{Generate CCN Treemap based on saikuro analysis}
 
-      s.add_dependency  'json-pure'
+      s.add_dependency  'json_pure'
       s.add_dependency  'Saikuro'
 
       s.files           = `git ls-files`.split("\n") + %w(saikuro_treemap.gemspec)
