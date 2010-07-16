@@ -6,13 +6,12 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["ThoughtWorks Studios"]
-  s.date = %q{2010-07-15}
+  s.date = %q{2010-07-16}
   s.description = %q{      Generate CCN Treemap based on saikuro analysis
 }
   s.email = %q{studios@thoughtworks.com}
   s.extra_rdoc_files = ["README.textile"]
   s.files = [".gitignore", "MIT-LICENSE.txt", "README.textile", "Rakefile", "lib/saikuro_treemap.rb", "lib/saikuro_treemap/ccn_node.rb", "lib/saikuro_treemap/parser.rb", "saikuro_treemap.gemspec", "templates/css/treemap.css", "templates/index.html.erb", "templates/js/jit-min.js", "templates/js/jit.js", "templates/js/saikuro-render.js", "templates/saikuro.html.erb", "test/ccn_node_test.rb", "test/test_helper.rb"]
-  s.has_rdoc = false
   s.homepage = %q{http://saikuro_treemap.rubyforge.org}
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{saikuro_treemap}
@@ -25,8 +24,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<json>, [">= 0"])
+      s.add_runtime_dependency(%q<Saikuro>, [">= 0"])
     else
+      s.add_dependency(%q<json>, [">= 0"])
+      s.add_dependency(%q<Saikuro>, [">= 0"])
     end
   else
+    s.add_dependency(%q<json>, [">= 0"])
+    s.add_dependency(%q<Saikuro>, [">= 0"])
   end
 end

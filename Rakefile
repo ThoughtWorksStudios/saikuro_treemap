@@ -27,6 +27,8 @@ else
       s.description = <<-EOF
       Generate CCN Treemap based on saikuro analysis
     EOF
+      s.add_dependency    'json'
+      s.add_dependency    'Saikuro'
 
       s.files           = `git ls-files`.split("\n") + %w(saikuro_treemap.gemspec)
       s.bindir          = 'bin'
