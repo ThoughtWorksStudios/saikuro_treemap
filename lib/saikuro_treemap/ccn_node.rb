@@ -2,25 +2,23 @@ module SaikuroTreemap
   class CCNNode
     attr_reader :path
     
-    def initialize(id, name, attributes = {})
-      @name = name
-      @id = id
+    def initialize(path, attributes = {})
+      @path = path
       @attributes = attributes
       @children = []
-      @path = id
     end
 
     def add_child(child)
       @children << child
     end
 
-    def find_node(*path)
-      return self if path.join("::") == @id
-      return self if path.empty?
+    def find_node(*pathes)
+      return self if pathes.join("::") == @path
+      return self if pathes.empty?
 
       # Eumerable#find is buggy!
       @children.each do |child|
-        if r = child.find_node(path)
+        if r = child.find_node(pathes)
           return r 
         end
       end
@@ -32,17 +30,23 @@ module SaikuroTreemap
     end
     
     def to_json(*args)
-      @attributes.merge({'name' => @name, 'id' => @id, 'children' => @children}).to_json(*args)
+      @attributes.merge({'name' => compact_name, 'id' => @path, 'children' => @children}).to_json(*args)
     end
     
     private
-    def find_or_create_node(*path)
-      find_node(*path) || create_node(*path)
+    
+    def compact_name
+      return '' if @path !~ /\S/
+      @path.split('::').last.split('#').last
     end
     
-    def create_node(*path)
-      parent = find_node(*path[0..-2])
-      parent.add_child(CCNNode.new(path.join("::"), path.last))      
+    def find_or_create_node(*pathes)
+      find_node(*pathes) || create_node(*pathes)
+    end
+    
+    def create_node(*pathes)
+      parent = find_node(*pathes[0..-2])
+      parent.add_child(CCNNode.new(pathes.join("::")))
     end
   end
 end

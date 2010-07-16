@@ -47,25 +47,24 @@ module SaikuroTreemap
   end
   
   def self.create_ccn_root_node(saikuro_files)
-    root_node = CCNNode.new('', '', :data => {})
-    saikuro_files.each {|f|      
+    root_node = CCNNode.new('')
+    saikuro_files.each do |f|      
       f[:classes].each do |c|
         class_node_name = c[:class_name]
         namespaces = class_node_name.split("::")[0..-2]
         root_node.create_nodes(*namespaces)
 
-        class_node = CCNNode.new(class_node_name, class_node_name.split("::").last, :data => {:complexity => c[:complexity], :lines => c[:lines], :$area => c[:lines], :$color => '#101010'})
-
+        class_node = CCNNode.new(class_node_name, :data => {:complexity => c[:complexity], :lines => c[:lines], :$area => c[:lines], :$color => '#101010'})
         parent = root_node.find_node(*namespaces)
         parent.add_child(class_node)
 
         c[:methods].each do |m|
           method_node_name = m[:name]
-          method_node = CCNNode.new(method_node_name, method_node_name.split('#').last, :data => {:complexity => m[:complexity], :lines => m[:lines], :$area => m[:lines], :$color => ccn_color(m[:complexity])})
+          method_node = CCNNode.new(method_node_name, :data => {:complexity => m[:complexity], :lines => m[:lines], :$area => m[:lines], :$color => ccn_color(m[:complexity])})
           class_node.add_child(method_node)
         end
       end
-    }
+    end
 
     root_node
   end
