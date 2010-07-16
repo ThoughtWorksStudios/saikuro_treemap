@@ -18,11 +18,15 @@ h2. Usage
 We clearly need to make the gem install a bit easier, but for now:
 
 * checkout this repos from github
-* >rake gem to build the saikuro_treemap gem
-* install saikuro_treemap gem
+* build the saikuro_treemap gem...
+* >rake gem 
+* install saikuro_treemap gem...
+* >sudo gem install saikuro_treemap 
 * add a rake task like below to your project, adjusting :code_dirs for your project:
 
 <pre>
+    require 'saikuro_treemap'
+  
     namespace :metrics do
       desc 'generate ccn treemap'
       task :ccn_treemap do
