@@ -3,6 +3,7 @@ require 'json'
 require 'erb'
 require 'rake'
 
+require 'saikuro_treemap/version'
 require 'saikuro_treemap/parser'
 require 'saikuro_treemap/ccn_node'
 
