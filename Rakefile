@@ -39,7 +39,7 @@ else
       
       s.author          = 'ThoughtWorks Studios'
       s.email           = 'studios@thoughtworks.com'
-      s.homepage        = 'http://saikuro_treemap.rubyforge.org'
+      s.homepage        = 'http://github.com/ThoughtWorksStudios/saikuro_treemap'
       s.rubyforge_project = 'saikuro_treemap'      
     end
 
