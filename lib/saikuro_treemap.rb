@@ -2,6 +2,7 @@ require 'rubygems'
 require 'json/pure'
 require 'erb'
 require 'rake'
+require 'base64'
 
 require 'saikuro_treemap/version'
 require 'saikuro_treemap/parser'
