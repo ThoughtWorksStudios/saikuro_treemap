@@ -4,39 +4,69 @@ require 'erb'
 require 'rake'
 require 'base64'
 
+require 'saikuro'
 require 'saikuro_treemap/version'
 require 'saikuro_treemap/parser'
 require 'saikuro_treemap/ccn_node'
 
 module SaikuroTreemap
   
+  class SaikuroRake
+    include ResultIndexGenerator
+    
+    def run(options)
+      
+      rm_rf options[:output_directory]
+      
+      state_filter = Filter.new(5)
+      token_filter = Filter.new(10, 25, 50)
+      
+      state_filter.limit = options[:filter_cyclo] if options[:filter_cyclo]
+      state_filter.warn = options[:warn_cyclo] if options[:warn_cyclo]
+      state_filter.error = options[:error_cyclo] if options[:error_cyclo]
+      
+      token_filter.limit = options[:filter_token] if options[:filter_token]
+      token_filter.warn = options[:warn_token] if options[:warn_token]
+      token_filter.error = options[:error_token] if options[:error_token]
+      
+      state_formater = ParseStateFormater.new(STDOUT, state_filter)
+      token_count_formater = TokenCounterFormater.new(STDOUT, token_filter)
+      
+      idx_states, idx_tokens = Saikuro.analyze(
+        files_in_dirs(options[:code_dirs]),
+        state_formater,
+        token_count_formater,
+        options[:output_directory]
+      )
+      
+      write_cyclo_index(idx_states, options[:output_directory])
+      write_token_index(idx_tokens, options[:output_directory])
+    end
+    
+    def files_in_dirs(code_dirs)
+      code_dirs = [code_dirs].flatten
+      code_dirs.collect {|dir| Dir["#{dir}/**/*.rb"]}.flatten
+    end
+    
+  end
+  
+
   DEFAULT_CONFIG = {
-    :code_dirs => ['app/controllers', 'app/models', 'app/helpers' 'lib'],
+    :code_dirs => ['app/controllers', 'app/models', 'app/helpers', 'lib'],
     :output_file => 'reports/saikuro_treemap.html',
-    :saikuro_args => [
-      "--warn_cyclo 5",
-      "--error_cyclo 7",
-      "--formater text",
-      "--cyclo --filter_cyclo 0"]
+    :warn_cyclo => 5,
+    :error_cyclo => 7,
+    :filter_cyclo => 0
   }
   
-  def self.generate_treemap(config={})    
+  def self.generate_treemap(config={})
     temp_dir = 'tmp/saikuro'
     
     config = DEFAULT_CONFIG.merge(config)
     
-    config[:saikuro_args] << "--output_directory #{temp_dir}"
-    
-    options_string = config[:saikuro_args] + config[:code_dirs].collect { |dir|  "--input_directory '#{dir}'" }
-    
-    
-    rm_rf temp_dir
-    sh %{saikuro #{options_string.join(' ')}} do |ok, response| 
-      unless ok 
-        puts "Saikuro failed with exit status: #{response.exitstatus}" 
-        exit 1 
-      end 
-    end
+    config[:output_directory] = temp_dir
+
+    SaikuroRake.new.run(config)
     
     saikuro_files = Parser.parse(temp_dir)
     
